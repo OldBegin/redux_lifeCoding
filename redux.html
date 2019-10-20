@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.1/redux.js"></script>
+</head>
+<body>
+    <div id ="red"></div>
+    <div id="blue"></div>
+    <div id="green"></div>
+    
+    <script>
+
+    function reducer( state, action ){
+        console.log(state, action);
+        if(state === undefined){
+            return { color: 'yellow'}
+        }
+        var newState;
+        if(action.type === 'CHANGE_COLOR'){
+            newState = Object.assign({},state);
+            newState.color = action.color;
+            return newState;
+        }
+    }
+
+    const store = Redux.createStore(
+            reducer, /* preloadedState, */
+            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+        );
+
+    function red(){
+        var stateFrom = store.getState(); // get contents from store to save to _state for using in function red()
+        document.querySelector('#red').innerHTML = `
+        <div class="container" id="container_red" style="background-color:${stateFrom.color}">
+            <h1>red</h1>
+            <input type="button" value="fire" onclick= "
+                store.dispatch({type:'CHANGE_COLOR', color: 'red'});
+            ">
+        </div>`
+    }
+    store.subscribe(red);  // subscribe function red() in store.subscribe()
+    red();
+
+    function blue() {
+        var stateFrom = store.getState(); // get contents from store to save to _state for using in function red()
+        document.querySelector('#blue').innerHTML = `
+    <div class="container" id="container_blue" style="background-color:${stateFrom.color}">
+        <h1>blue</h1>
+        <input type="button" value="fire" onclick= "
+            store.dispatch({type:'CHANGE_COLOR', color: 'blue'});
+        ">
+    </div>`
+    }
+    store.subscribe(blue);
+    blue();
+
+    function green() {
+        var stateFrom = store.getState(); // get contents from store to save to _state for using in function red()
+        document.querySelector('#green').innerHTML = `
+        <div class="container" id="container_blue" style="background-color:${stateFrom.color}">
+            <h1>green</h1>
+            <input type="button" value="fire" onclick= "
+                store.dispatch({type:'CHANGE_COLOR', color: 'green'});
+            ">
+        </div>`
+    }
+    store.subscribe(green);
+    green();
+
+    </script>
+</body>
+</html>
